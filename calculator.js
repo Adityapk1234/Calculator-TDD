@@ -3,6 +3,15 @@ function add(numbers) {
         return 0;
     }
 
-    const numArray = numbers.split(/[\n,]/); // split by newlines or commas
+    let delimiter = /[\n,]/; // default delimiters: newlines or commas
+
+    // Check for custom delimiter
+    if (numbers.startsWith("//")) {
+        const delimiterEndIndex = numbers.indexOf('\n');
+        delimiter = new RegExp(numbers.substring(2, delimiterEndIndex));
+        numbers = numbers.substring(delimiterEndIndex + 1); // remove delimiter definition
+    }
+
+    const numArray = numbers.split(delimiter);
     return numArray.reduce((sum, num) => sum + parseInt(num), 0);
 }

@@ -3,15 +3,20 @@ function add(numbers) {
         return 0;
     }
 
-    let delimiter = /[\n,]/; // default delimiters: newlines or commas
+    let delimiter = /[\n,]/;
 
-    // Check for custom delimiter
     if (numbers.startsWith("//")) {
         const delimiterEndIndex = numbers.indexOf('\n');
         delimiter = new RegExp(numbers.substring(2, delimiterEndIndex));
-        numbers = numbers.substring(delimiterEndIndex + 1); // remove delimiter definition
+        numbers = numbers.substring(delimiterEndIndex + 1);
     }
 
     const numArray = numbers.split(delimiter);
+    const negatives = numArray.filter(num => parseInt(num) < 0);
+
+    if (negatives.length > 0) {
+        throw new Error(`Negative numbers not allowed: ${negatives.join(", ")}`);
+    }
+
     return numArray.reduce((sum, num) => sum + parseInt(num), 0);
 }
